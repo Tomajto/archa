@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
-import 'auth_screen.dart';  // Import the AuthScreen for navigation
 
 class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Main Screen'),
+        title: const Text('Main Screen'),
         actions: [
           IconButton(
-            icon: CircleAvatar(
+            icon: const CircleAvatar(
               backgroundColor: Colors.white,
               child: Icon(Icons.person, color: Colors.blue),
             ),
             onPressed: () {
-              // Navigate to Sign Up / Sign In screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AuthScreen()),
-              );
+              // Optional action to navigate to profile or logout
             },
           )
         ],
       ),
-      body: Center(
-        child: Text('Welcome to the Main Screen'),
+      body: const Center(
+        child: Text(
+          'Welcome to the Main Screen!',
+          style: TextStyle(fontSize: 24),
+        ),
       ),
     );
   }
