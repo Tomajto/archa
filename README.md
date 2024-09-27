@@ -1,10 +1,10 @@
 # archa
 
-A new Flutter project.
+Novej flutter projekt pro hackathon v archa.
 
-## Getting Started
+## Začíname 
 
-This project is a starting point for a Flutter application.
+Tým: Tomáš Richtr, Filip Titěra, Daniel Pavlásek, Václav Vančura
 
 A few resources to get you started if this is your first Flutter project:
 
