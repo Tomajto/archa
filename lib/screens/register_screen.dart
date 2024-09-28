@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart';  // Import the login screen
+import 'login_screen.dart';
+import '../main.dart';  // Updated import to point to the correct main.dart
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -40,15 +41,18 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    // Handle register logic
+                    // Navigate to the main MyApp screen after successful registration
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MyApp()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50), backgroundColor: Colors.black,
                   ),
-                  child: const Text('Register'),
+                  child: const Text('Register', style: TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(height: 20),
-                // Add "Already have an account?" section here
                 const Text('Already have an account?'),
                 GestureDetector(
                   onTap: () {

@@ -1,7 +1,6 @@
+import 'package:archa/screens/register_screen.dart';
 import 'package:flutter/material.dart';
-import 'main_screen.dart';
-import 'register_screen.dart';
-import 'forgot_password_screen.dart';
+import '../main.dart';  // Updated import to point to the correct main.dart
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -16,11 +15,11 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.lock, size: 100, color: Colors.white),  // Changed color to white
+                const Icon(Icons.lock, size: 100, color: Color.fromARGB(255, 0, 0, 0)),
                 const SizedBox(height: 20),
                 const Text(
                   'Welcome back you\'ve been missed!',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),  // Changed color to white
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -38,34 +37,22 @@ class LoginScreen extends StatelessWidget {
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
-                Center(  // Wrapped with Center widget to center the text
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text('Forgot Password?', style: TextStyle(color: Colors.white)),  // Changed color to white
-                  ),
-                ),
-                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
+                    // Navigate to the main MyApp screen after successful login
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const MainScreen()),
+                      MaterialPageRoute(builder: (context) => const MyApp()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50), backgroundColor: Colors.black,
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Colors.black,
                   ),
-                  child: const Text('Sign In', style: TextStyle(color: Colors.white)),  // Ensure text is white
+                  child: const Text('Sign In', style: TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(height: 20),
-                const Text('Not a member? ', style: TextStyle(color: Colors.white)),  // Changed color to white
+                const Text('Not a member? ', style: TextStyle(color: Colors.white)),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
