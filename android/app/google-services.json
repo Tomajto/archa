@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "697435246721",
+    "project_id": "archa-65f12",
+    "storage_bucket": "archa-65f12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:697435246721:android:1b3cfd8ede0ffd9ec6fd80",
+        "android_client_info": {
+          "package_name": "com.example.archa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF_hkDR0CTvQ-HgsM9DJl39LKO5B-FgL0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

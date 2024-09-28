@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import '../main.dart';  // Updated import to point to the correct main.dart
