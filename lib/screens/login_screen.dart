@@ -8,6 +8,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -18,8 +19,8 @@ class LoginScreen extends StatelessWidget {
                 const Icon(Icons.lock, size: 100, color: Color.fromARGB(255, 0, 0, 0)),
                 const SizedBox(height: 20),
                 const Text(
-                  'Welcome back you\'ve been missed!',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white),
+                  'Vítej zpět!',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -31,7 +32,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'Heslo',
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -49,10 +50,10 @@ class LoginScreen extends StatelessWidget {
                     minimumSize: const Size(double.infinity, 50),
                     backgroundColor: Colors.black,
                   ),
-                  child: const Text('Sign In', style: TextStyle(color: Colors.white)),
+                  child: const Text('Log in', style: TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(height: 20),
-                const Text('Not a member? ', style: TextStyle(color: Colors.white)),
+                const Text('Nemáš účet? ', style: TextStyle(color: Colors.black)),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(

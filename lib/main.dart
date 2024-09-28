@@ -26,8 +26,11 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: const Text('Main Screen'),
+        backgroundColor: Colors.grey[300],
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const CircleAvatar(
@@ -46,7 +49,7 @@ class MainScreen extends StatelessWidget {
       body: const Center(
         child: Text(
           'Welcome to the Main Screen!',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+          style: TextStyle(fontSize: 24, color: Colors.black),
         ),
       ),
     );

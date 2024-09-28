@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 import '../main.dart';  // Updated import to point to the correct main.dart
@@ -8,7 +10,7 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register')),
+      backgroundColor: Colors.grey[300],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
@@ -16,6 +18,13 @@ class RegisterScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Icon(Icons.lock, size: 100, color: Colors.black),
+                const SizedBox(height: 20),
+                const Text(
+                  'Udělej si účet!',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),
+                ),
+                const SizedBox(height: 20),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Email',
@@ -25,7 +34,7 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'Heslo',
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -33,7 +42,7 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextFormField(
                   decoration: const InputDecoration(
-                    labelText: 'Confirm Password',
+                    labelText: 'Potvrď heslo',
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -50,10 +59,10 @@ class RegisterScreen extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50), backgroundColor: Colors.black,
                   ),
-                  child: const Text('Register', style: TextStyle(color: Colors.white)),
+                  child: const Text('Registrovat', style: TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(height: 20),
-                const Text('Already have an account?'),
+                const Text('Už máš účet?'),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushReplacement(

@@ -7,8 +7,11 @@ class UserSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: const Text('User Settings', style: TextStyle(color: Colors.white)),  // Ensure the title is white
+        title: const Text('Nastavení', style: TextStyle(color: Colors.black)),  // Ensure the title is white
+        backgroundColor: Colors.grey[300],
+        centerTitle: true,
       ),
       body: Center(
         child: ElevatedButton(
