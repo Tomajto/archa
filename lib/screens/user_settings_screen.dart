@@ -1,30 +1,48 @@
 import 'package:flutter/material.dart';
-import 'register_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'login_screen.dart'; // Import the login screen to navigate after logout
 
 class UserSettingsScreen extends StatelessWidget {
   const UserSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Fetch the current user and their email
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    String? email = currentUser?.email ?? 'No email available';
+
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: const Text('Nastavení', style: TextStyle(color: Colors.black)),  // Ensure the title is white
+        title: const Text('Nastavení'),
         backgroundColor: Colors.grey[300],
-        centerTitle: true,
-      ),
-      body: Center(
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.red,  // Log out button in red for visibility
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut(); // Log out the user
+              // Navigate to the login screen after signing out
+              Navigator.pushReplacement(
+                // ignore: use_build_context_synchronously
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
+            },
           ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const RegisterScreen()),
-            );
-          },
-          child: const Text('Log Out', style: TextStyle(color: Colors.white)),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Logged in as: $email',
+              style: const TextStyle(fontSize: 18),
+            ),
+            // Add other settings options below
+            // ...
+          ],
         ),
       ),
     );

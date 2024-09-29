@@ -6,6 +6,7 @@ class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _RegisterScreenState createState() => _RegisterScreenState();
 }
 
@@ -22,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
       // After successful registration, navigate to login screen
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
@@ -91,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text("Already have an account?"),
+            const Text("Už účet máš? Přihlaš se!"),
             TextButton(
               onPressed: () {
                 // Navigate to the login screen
