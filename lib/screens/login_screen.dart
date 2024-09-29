@@ -7,7 +7,6 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
@@ -24,7 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       // Navigate to the main screen after login
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const MainScreen()), // Main screen
       );
@@ -36,25 +34,61 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
+      backgroundColor: Colors.grey[300], // Light grey background
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Icon(
+              Icons.lock, // Lock icon at the top
+              size: 100,
+              color: Colors.black,
+            ),
+            const SizedBox(height: 15), // Space between the lock and text
+            const Text(
+              'Přihlas se!', // Text under lock icon
+              style: TextStyle(fontSize: 18, color: Colors.black),
+            ),
+            const SizedBox(height: 15), // Add space between lock and fields
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                filled: true,
+                fillColor: Colors.white, // White inside the box
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
+            const SizedBox(height: 20), // Spacing between text fields
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                labelText: 'Password',
+                filled: true,
+                fillColor: Colors.white, // White inside the box
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               obscureText: true,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30), // Spacing before the button
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black, // Black background for the button
+                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15), // Adjust button size
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
               onPressed: _login,
-              child: const Text('Login'),
+              child: const Text(
+                'Login',
+                style: TextStyle(color: Colors.white), // White text
+              ),
             ),
             const SizedBox(height: 20),
             const Text("Don't have an account?"),
@@ -66,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   MaterialPageRoute(builder: (context) => const RegisterScreen()),
                 );
               },
-              child: const Text('Register'),
+              child: const Text('Register', style: TextStyle(color: Colors.blue)),
             ),
           ],
         ),

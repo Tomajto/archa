@@ -7,8 +7,11 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: const Text('Main Screen'),
+        title: const Text('Hlavní strana', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.grey[300],
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const CircleAvatar(
@@ -25,7 +28,7 @@ class MainScreen extends StatelessWidget {
         ],
       ),
       body: const Center(
-        child: Text('Welcome to the Main Screen!'),
+        child: Text('Vítej!'),
       ),
     );
   }
