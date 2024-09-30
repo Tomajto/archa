@@ -62,9 +62,9 @@ class _RootPageState extends State<RootPage> {
           ],
         ),
       ),
-      body: SingleChildScrollView( // Added SingleChildScrollView for scrolling
+      body: const SingleChildScrollView( // Added SingleChildScrollView for scrolling
         child: Column(
-          children: const [
+          children: [
             ScreenplayWidget(
               title: 'The Tempest',
               description:
@@ -74,6 +74,7 @@ class _RootPageState extends State<RootPage> {
               price: 250,
               availableTickets: 100,
               rating: 4.5,
+              details: "fuck nigger",
             ),
             ScreenplayWidget(
               title: 'Romeo and Juliet',
@@ -84,6 +85,7 @@ class _RootPageState extends State<RootPage> {
               price: 200,
               availableTickets: 50,
               rating: 4.0,
+              details: "pterumcaca",
             ),
             ScreenplayWidget(
               title: 'Macbeth',
@@ -94,6 +96,7 @@ class _RootPageState extends State<RootPage> {
               price: 300,
               availableTickets: 75,
               rating: 4.2,
+              details: "pterumcaca",
             ),
           ],
         ),
@@ -199,7 +202,6 @@ class _FlashTextWidgetState extends State<FlashTextWidget> {
   }
 }
 
-// Define the ScreenplayWidget class that expands on click
 class ScreenplayWidget extends StatefulWidget {
   final String title;
   final String description;
@@ -208,6 +210,7 @@ class ScreenplayWidget extends StatefulWidget {
   final double price;
   final int availableTickets;
   final double rating;
+  final String details; // Customizable details for each screenplay
 
   const ScreenplayWidget({
     Key? key,
@@ -218,6 +221,7 @@ class ScreenplayWidget extends StatefulWidget {
     required this.price,
     required this.availableTickets,
     required this.rating,
+    required this.details, // Accept customizable details
   }) : super(key: key);
 
   @override
@@ -289,9 +293,9 @@ class _ScreenplayWidgetState extends State<ScreenplayWidget> {
               ),
               if (_expanded) ...[
                 const SizedBox(height: 10),
-                // Expanded details
+                // Expanded customizable details
                 Text(
-                  'This is where additional details about the play can be shown, such as actors, directors, and special effects.',
+                  widget.details,
                   style: const TextStyle(fontSize: 16, color: Colors.orangeAccent),
                 ),
               ],
