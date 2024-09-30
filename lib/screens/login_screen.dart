@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 60), // Space above the logo
+            const SizedBox(height: 10), // Space above the logo
 
             // Display the logo (Replacing the lock icon)
             Image.asset(
@@ -59,7 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
 
             const SizedBox(height: 20), // Add space between text and fields
-            const SizedBox(height: 15), // Add space between lock and fields
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
