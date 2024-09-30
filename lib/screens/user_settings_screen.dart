@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'package:archa/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +18,12 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
   // Language selector variables
   String _selectedLanguage = 'English'; // Default language
-  final List<String> _languages = ['English', 'Czech'];
+  final List<String> _languages = [
+    'English',
+    'Czech',
+    'Vietnamese',
+    'Ukranian'
+  ];
 
   @override
   void initState() {
@@ -80,8 +86,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
               data: Theme.of(context).copyWith(
                   textSelectionTheme: const TextSelectionThemeData(
                 cursorColor: Color(0xFFFF4C00), // Cursor color
-                selectionColor:Color(0xFFFF4C00), // Selection highlight color
-                selectionHandleColor:Color(0xFFFF4C00),
+                selectionColor: Color(0xFFFF4C00), // Selection highlight color
+                selectionHandleColor: Color(0xFFFF4C00),
               )),
               child: TextField(
                 cursorColor: const Color(0xFFFF4C00),
@@ -139,6 +145,18 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                         if (language == 'Czech')
                           Image.asset(
                             'assets/vlajka_cr.png', // Path to the Czech flag
+                            width: 24,
+                            height: 24,
+                          ),
+                        if (language == 'Vietnamese')
+                          Image.asset(
+                            'assets/vlajka_viet.png', // Path to the viet flag
+                            width: 24,
+                            height: 24,
+                          ),
+                        if (language == 'Ukranian')
+                          Image.asset(
+                            'assets/flag_ukr.png', // Path to the ukr flag
                             width: 24,
                             height: 24,
                           ),
