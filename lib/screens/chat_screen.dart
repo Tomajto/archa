@@ -6,6 +6,7 @@ class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ChatScreenState createState() => _ChatScreenState();
 }
 
@@ -49,8 +50,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   // Create a new chat room
   void _createChatRoom() async {
-    if (_roomNameController.text.isEmpty || _participantController.text.isEmpty)
+    if (_roomNameController.text.isEmpty || _participantController.text.isEmpty) {
       return;
+    }
 
     // Add participants
     _participants.add(_username!);
@@ -68,6 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
       _participants = []; // Clear participants list
     });
 
+    // ignore: use_build_context_synchronously
     Navigator.pop(context); // Close the dialog
   }
 
@@ -95,21 +98,21 @@ class _ChatScreenState extends State<ChatScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: Text('Create a new chat room',
+          title: const Text('Create a new chat room',
               style: TextStyle(color: Colors.white)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
                 controller: _roomNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Room Name',
                   labelStyle: TextStyle(color: Colors.white),
                 ),
               ),
               TextField(
                 controller: _participantController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Add participant by username',
                   labelStyle: TextStyle(color: Colors.white),
                 ),
@@ -118,13 +121,13 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel', style: TextStyle(color: Colors.white)),
+              child: const Text('Cancel', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
             TextButton(
-              child: Text('Create', style: TextStyle(color: Colors.orange)),
+              child: const Text('Create', style: TextStyle(color: Colors.orange)),
               onPressed: () {
                 _createChatRoom();
                 Navigator.pop(context);
@@ -210,12 +213,12 @@ class _ChatScreenState extends State<ChatScreen> {
                           return ListTile(
                             title: Text(
                               message['username'] ?? 'Unknown User',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
                             ),
                             subtitle: Text(
                               message['message'],
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           );
                         },
