@@ -62,9 +62,9 @@ class _RootPageState extends State<RootPage> {
           ],
         ),
       ),
-      body: SingleChildScrollView( // Added SingleChildScrollView for scrolling
+      body: const SingleChildScrollView( // Added SingleChildScrollView for scrolling
         child: Column(
-          children: const [
+          children: [
             ScreenplayWidget(
               title: 'The Tempest',
               description:
@@ -158,6 +158,7 @@ class FlashTextWidget extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _FlashTextWidgetState createState() => _FlashTextWidgetState();
 }
 
@@ -210,7 +211,7 @@ class ScreenplayWidget extends StatefulWidget {
   final double rating;
 
   const ScreenplayWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.venue,
@@ -218,9 +219,10 @@ class ScreenplayWidget extends StatefulWidget {
     required this.price,
     required this.availableTickets,
     required this.rating,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _ScreenplayWidgetState createState() => _ScreenplayWidgetState();
 }
 
