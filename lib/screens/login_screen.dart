@@ -37,21 +37,21 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF4CFF00), // Light grey background
+      backgroundColor: Color(0xFFB8FF00), // Light grey background
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start, // Align to the top
           children: [
-            const SizedBox(height: 10), // Space above the logo
+            const SizedBox(height: 50), // Space above the logo
 
             // Display the logo (Replacing the lock icon)
             Image.asset(
               'assets/logo.png', // Path to your logo image in the assets folder
-              height: 120, // Adjust the height as needed
+              height: 250, // Adjust the height as needed
             ),
 
-            const SizedBox(height: 50), // Space between logo and text
+            const SizedBox(height: 100), // Space between logo and text
 
             const Text(
               'Přihlas se!', // Text under the logo
@@ -62,9 +62,10 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
+                labelStyle: const TextStyle(color: Color(0xFFB8FF00)),
                 labelText: 'Email',
                 filled: true,
-                fillColor: Colors.white, // White inside the box
+                fillColor: Colors.black, // White inside the box
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -74,9 +75,10 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
+                labelStyle: const TextStyle(color: Color(0xFFB8FF00)),
                 labelText: 'Heslo',
                 filled: true,
-                fillColor: Colors.white, // White inside the box
+                fillColor: Colors.black, // White inside the box
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -97,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: _login,
               child: const Text(
                 'Login',
-                style: TextStyle(color: Colors.white), // White text
+                style: TextStyle(color: Color(0xFFB8FF00)), // White text
               ),
             ),
             const SizedBox(height: 20),
