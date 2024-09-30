@@ -54,9 +54,9 @@ class _ChatScreenState extends State<ChatScreen> {
       return;
     }
 
-    // Add participants
-    _participants.add(_username!);
-    _participants.add(_participantController.text);
+    // Split participants by commas
+    _participants = _participantController.text.split(',').map((e) => e.trim()).toList();
+    _participants.add(_username!); // Add the current user to the participants list
 
     // Create the room in Firestore
     DocumentReference roomRef =
@@ -105,6 +105,7 @@ class _ChatScreenState extends State<ChatScreen> {
             children: <Widget>[
               TextField(
                 controller: _roomNameController,
+                style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelText: 'Room Name',
                   labelStyle: TextStyle(color: Colors.white),
@@ -112,8 +113,9 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               TextField(
                 controller: _participantController,
+                style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
-                  labelText: 'Add participant by username',
+                  labelText: 'Add participants (comma separated)',
                   labelStyle: TextStyle(color: Colors.white),
                 ),
               ),
@@ -175,9 +177,14 @@ class _ChatScreenState extends State<ChatScreen> {
                           : [];
 
                       return ListTile(
-                        title: Text(roomName),
-                        subtitle:
-                            Text('Participants: ${participants.join(', ')}'),
+                        title: Text(
+                          roomName,
+                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          'Participants: ${participants.join(', ')}',
+                          style: const TextStyle(color: Colors.white),
+                        ),
                         onTap: () {
                           setState(() {
                             _selectedRoom = room.id; // Set selected room
@@ -214,7 +221,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             title: Text(
                               message['username'] ?? 'Unknown User',
                               style: const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                             subtitle: Text(
                               message['message'],
