@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TicketsScreen extends StatefulWidget {
-  TicketsScreen({super.key});
+  const TicketsScreen({super.key});
 
   @override
   State<TicketsScreen> createState() => TicketsScreenState();

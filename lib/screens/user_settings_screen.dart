@@ -18,12 +18,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
   // Language selector variables
   String _selectedLanguage = 'English'; // Default language
-  final List<String> _languages = [
-    'English',
-    'Czech',
-    'Vietnamese',
-    'Ukranian'
-  ];
 
   @override
   void initState() {
@@ -108,71 +102,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
               ),
             ),
             const SizedBox(height: 20),
-
-            // Language selection dropdown
-            const Text(
-              'Select language:',
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-              decoration: BoxDecoration(
-                color: Colors.grey[900],
-                borderRadius: BorderRadius.circular(3.82),
-                border: Border.all(color: const Color(0xFFFF4C00)),
-              ),
-              child: DropdownButton<String>(
-                value: _selectedLanguage,
-                icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-                dropdownColor: Colors.grey[900],
-                isExpanded: true,
-                underline: Container(),
-                style: const TextStyle(color: Colors.white, fontSize: 16),
-                items: _languages.map((String language) {
-                  return DropdownMenuItem<String>(
-                    value: language,
-                    child: Row(
-                      children: [
-                        // Add flags based on the language
-                        if (language == 'English')
-                          Image.asset(
-                            'assets/vlajka_uk.png', // Path to the UK flag
-                            width: 24,
-                            height: 24,
-                          ),
-                        if (language == 'Czech')
-                          Image.asset(
-                            'assets/vlajka_cr.png', // Path to the Czech flag
-                            width: 24,
-                            height: 24,
-                          ),
-                        if (language == 'Vietnamese')
-                          Image.asset(
-                            'assets/vlajka_viet.png', // Path to the viet flag
-                            width: 24,
-                            height: 24,
-                          ),
-                        if (language == 'Ukranian')
-                          Image.asset(
-                            'assets/flag_ukr.png', // Path to the ukr flag
-                            width: 24,
-                            height: 24,
-                          ),
-                        const SizedBox(width: 10),
-                        Text(language),
-                      ],
-                    ),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedLanguage = newValue!;
-                  });
-                },
-              ),
-            ),
 
             const Spacer(),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [

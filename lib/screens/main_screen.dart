@@ -43,6 +43,14 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
+  String _selectedFlag = 'assets/vlajka_cr.png'; // Default flag
+
+  // This function is called when the user selects a different flag
+  void _changeFlag(String newFlag) {
+    setState(() {
+      _selectedFlag = newFlag;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,13 +59,48 @@ class _RootPageState extends State<RootPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text("ARCHA+"),
-            FlashTextWidget(
-              label: 'USER',
-              onTapMessage: 'USER',
-              size: 40,
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const UserSettingsScreen()));
+            DropdownButton<String>(
+              value: _selectedFlag,
+              icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
+              underline: Container(), // Remove the underline
+              dropdownColor: const Color(0xFFFF4C00),
+              onChanged: (String? newFlag) {
+                if (newFlag != null) {
+                  _changeFlag(newFlag);
+                }
               },
+              items: [
+                DropdownMenuItem(
+                  value: 'assets/vlajka_uk.png',
+                  child: Row(
+                    children: [
+                      Image.asset('assets/vlajka_uk.png', width: 24, height: 24),
+                      const SizedBox(width: 8),
+                      const Text("English", style: TextStyle(color: Colors.black)),
+                    ],
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 'assets/vlajka_cr.png',
+                  child: Row(
+                    children: [
+                      Image.asset('assets/vlajka_cr.png', width: 24, height: 24),
+                      const SizedBox(width: 8),
+                      const Text("Čeština", style: TextStyle(color: Colors.black)),
+                    ],
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 'assets/vlajka_viet.png',
+                  child: Row(
+                    children: [
+                      Image.asset('assets/vlajka_viet.png', width: 24, height: 24),
+                      const SizedBox(width: 8),
+                      const Text("Vietnamština", style: TextStyle(color: Colors.black)),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -108,10 +151,12 @@ class _RootPageState extends State<RootPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             FlashTextWidget(
-              label: 'HOME',
-              onTapMessage: 'HOME',
+              label: 'USER',
+              onTapMessage: 'USER',
               size: 30,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const UserSettingsScreen()));
+              },
             ),
             FlashTextWidget(
               label: 'CHAT',
@@ -134,7 +179,7 @@ class _RootPageState extends State<RootPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TicketsScreen(),
+                    builder: (context) => const TicketsScreen(),
                   ),
                 );
               },
@@ -161,6 +206,7 @@ class FlashTextWidget extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _FlashTextWidgetState createState() => _FlashTextWidgetState();
 }
 
@@ -213,7 +259,7 @@ class ScreenplayWidget extends StatefulWidget {
   final String details; // Customizable details for each screenplay
 
   const ScreenplayWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.venue,
@@ -222,9 +268,10 @@ class ScreenplayWidget extends StatefulWidget {
     required this.availableTickets,
     required this.rating,
     required this.details, // Accept customizable details
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _ScreenplayWidgetState createState() => _ScreenplayWidgetState();
 }
 
