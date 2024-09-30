@@ -96,7 +96,7 @@ class _RootPageState extends State<RootPage> {
               price: 300,
               availableTickets: 75,
               rating: 4.2,
-              details: "pterumcaca",
+              details: "pterumcacas",
             ),
           ],
         ),

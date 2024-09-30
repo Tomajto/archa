@@ -146,6 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('CHAT ROOMS'),
+        centerTitle: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
