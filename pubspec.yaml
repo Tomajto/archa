@@ -32,6 +32,8 @@ flutter:
     - assets/apple_icon.png
     - assets/google_icon.png
     - assets/logo.png
+    - assets/vlajka_cr.png
+    - assets/vlajka_uk.png
     - assets/fonts/Archabeta-Regular.otf
     - assets/fonts/Archabeta-Light.otf
     - assets/fonts/Archabeta-Medium.otf
