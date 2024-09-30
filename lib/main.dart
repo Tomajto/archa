@@ -44,7 +44,7 @@ class AuthCheck extends StatelessWidget {
           );
         } else if (snapshot.hasData) {
           // User is signed in, go to user settings
-          return const UserSettingsScreen();
+          return UserSettingsScreen();
         } else {
           // User is not signed in, go to login screen
           return const LoginScreen(); // Updated to show LoginScreen

@@ -1,52 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart'; // Import the login screen to navigate after logout
 
 class UserSettingsScreen extends StatefulWidget {
-  const UserSettingsScreen({super.key});
-
   @override
   _UserSettingsScreenState createState() => _UserSettingsScreenState();
 }
 
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+
+  // Language selector variables
   String _selectedLanguage = 'English'; // Default language
   final List<String> _languages = ['English', 'Czech'];
 
   @override
-  Widget build(BuildContext context) {
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    String? email = currentUser?.email ?? 'No email available';
+  void initState() {
+    super.initState();
+    _loadUsername();
+  }
 
+  // Load username from SharedPreferences
+  void _loadUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _usernameController.text = prefs.getString('username') ?? '';
+      _selectedLanguage = prefs.getString('language') ?? 'English'; // Load saved language
+    });
+  }
+
+  // Save username and language to SharedPreferences
+  void _saveSettings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', _usernameController.text);
+    await prefs.setString('language', _selectedLanguage); // Save the selected language
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Settings saved!')),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: const Text('Settings'),
-        backgroundColor: Colors.grey[300],
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-              );
-            },
-          ),
-        ],
+        title: Text('User Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Logged in as: $email',
-              style: const TextStyle(fontSize: 18),
+          children: [
+            // Username input field
+            TextField(
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                labelText: 'Enter your name',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 20),
-            // Modern styled dropdown menu for language selection with flags
+            
+            // Language selection dropdown
             Text(
               'Select language:',
               style: const TextStyle(fontSize: 16),
@@ -97,9 +111,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 },
               ),
             ),
+            
             const SizedBox(height: 20),
-            // Additional settings or UI components
-            // ...
+
+            // Save button
+            ElevatedButton(
+              onPressed: _saveSettings,
+              child: Text('Save Settings'),
+            ),
           ],
         ),
       ),

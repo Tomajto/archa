@@ -1,3 +1,4 @@
+import 'package:archa/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'user_settings_screen.dart'; // Import the user settings screen
 
@@ -38,38 +39,63 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-
   int page = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment:
-              MainAxisAlignment.spaceBetween,
-          children: [
-            const Text("ARCHA+"),
-            FlashTextWidget(label: ' MENU', onTapMessage: 'MENU', size: 40, onTap: () {},),
-          ],
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text("ARCHA+"),
+              FlashTextWidget(
+                label: ' USER',
+                onTapMessage: 'USER',
+                size: 40,
+                onTap: () {
+                // Navigate to user settings screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => UserSettingsScreen()),
+                );
+              },
+              ),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        height: 50,
-        color: const Color(0xFFFF4C00),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [            
-            FlashTextWidget(label: ' HOME ', onTapMessage: 'HOME', size: 30, onTap: () {},),
-            FlashTextWidget(label: ' USER ', onTapMessage: 'USER', size: 30, onTap: () {
-              // Navigate to user settings screen
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const UserSettingsScreen()),
-              );
-            },),
-            FlashTextWidget(label: ' ABOUT ', onTapMessage: 'ABOUT', size: 30, onTap:() {},),
-            ]
-        ),
-      )
-    );
+        bottomNavigationBar: Container(
+          height: 50,
+          color: const Color(0xFFFF4C00),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            FlashTextWidget(
+              label: ' HOME ',
+              onTapMessage: 'HOME',
+              size: 30,
+              onTap: () {},
+            ),
+            FlashTextWidget(
+              label: ' CHAT ',
+              onTapMessage: 'CHAT',
+              size: 30,
+              onTap: () {
+                // Navigate to user settings screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChatScreen()),
+                );
+              },
+            ),
+            FlashTextWidget(
+              label: ' ABOUT ',
+              onTapMessage: 'ABOUT',
+              size: 30,
+              onTap: () {},
+            ),
+          ]),
+        ));
   }
 }
 
@@ -78,7 +104,12 @@ class FlashTextWidget extends StatefulWidget {
   final String onTapMessage;
   final double? size;
   final VoidCallback onTap;
-  const FlashTextWidget({super.key, required this.label, required this.onTapMessage, required this.size, required this.onTap});
+  const FlashTextWidget(
+      {super.key,
+      required this.label,
+      required this.onTapMessage,
+      required this.size,
+      required this.onTap});
 
   @override
   _FlashTextWidgetState createState() => _FlashTextWidgetState();
@@ -101,7 +132,6 @@ class _FlashTextWidgetState extends State<FlashTextWidget> {
     });
     widget.onTap();
     debugPrint('${widget.onTapMessage} TAP RELEASED');
-
   }
 
   @override
