@@ -21,7 +21,7 @@ class MainScreen extends StatelessWidget {
               // Navigate to user settings screen
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => UserSettingsScreen()),
+                MaterialPageRoute(builder: (context) => const UserSettingsScreen()),
               );
             },
           ),
