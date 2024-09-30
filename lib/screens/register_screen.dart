@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
 import 'login_screen.dart'; // Import the login screen
 
 class RegisterScreen extends StatefulWidget {
@@ -24,7 +23,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
       // After successful registration, navigate to login screen
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
@@ -43,31 +41,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start, // Align to the top
             children: [
-              const SizedBox(height: 50), // Reduce the height to move logo up
+              const SizedBox(height: 50), // Space above the logo
 
-              // Make the logo bigger
+              // Display the logo (Replacing the lock icon)
               Image.asset(
                 'assets/logo.png', // Path to your logo image in the assets folder
-                height: 250, // Increase the height to make the logo bigger
+                height: 250, // Adjust the height as needed
               ),
 
               const SizedBox(height: 100), // Adjust the spacing below the logo
 
               const Text(
                 'Registruj se!', // Text under the logo
-                style: TextStyle(fontSize: 28, color: Colors.black),
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.black,
+                  fontFamily: 'Archabeta', // Apply Archabeta font
+                ),
               ),
 
               const SizedBox(height: 20), // Add space between text and fields
               TextField(
                 controller: _emailController,
-                
-                style: const TextStyle(color: Color(0xFFB8FF00)), // Set the input text color to lime green
+                style: const TextStyle(
+                  color: Color(0xFFB8FF00),
+                  fontFamily: 'Archabeta', // Apply Archabeta font to input text
+                ),
                 decoration: InputDecoration(
                   hintText: "Email",
+                  hintStyle: const TextStyle(
+                    color: Color(0xFF89BF00),
+                    fontFamily: 'Archabeta', // Apply Archabeta font to hint text
+                  ),
                   filled: true,
                   fillColor: Colors.black, // Black inside the box
-                  hintStyle: const TextStyle(color: Color(0xFF89BF00)), // Label text color
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(3.82),
                   ),
@@ -76,9 +83,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 20), // Spacing between text fields
               TextField(
                 controller: _passwordController,
-                style: const TextStyle(color: Color(0xFFB8FF00)), // Set the input text color to lime green
+                style: const TextStyle(
+                  color: Color(0xFFB8FF00),
+                  fontFamily: 'Archabeta', // Apply Archabeta font to input text
+                ),
                 decoration: InputDecoration(
-                  hintStyle: const TextStyle(color: Color(0xFF89BF00)), // Label text color
+                  hintStyle: const TextStyle(
+                    color: Color(0xFF89BF00),
+                    fontFamily: 'Archabeta', // Apply Archabeta font to hint text
+                  ),
                   hintText: 'Heslo',
                   filled: true,
                   fillColor: Colors.black, // Black inside the box
@@ -101,11 +114,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed: _register,
                 child: const Text(
                   'Register',
-                  style: TextStyle(color: Color(0xFFB8FF00)), // Lime green text
+                  style: TextStyle(
+                    color: Color(0xFFB8FF00),
+                    fontFamily: 'Archabeta', // Apply Archabeta font to button text
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
-              const Text("Už účet máš? Přihlaš se!"),
+              const Text(
+                "Už účet máš? Přihlaš se!",
+                style: TextStyle(
+                  fontFamily: 'Archabeta', // Apply Archabeta font
+                ),
+              ),
               TextButton(
                 onPressed: () {
                   // Navigate to the login screen
@@ -114,7 +135,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     MaterialPageRoute(builder: (context) => const LoginScreen()),
                   );
                 },
-                child: const Text('Login', style: TextStyle(color: Colors.blue)),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontFamily: 'Archabeta', // Apply Archabeta font to button text
+                  ),
+                ),
               ),
             ],
           ),

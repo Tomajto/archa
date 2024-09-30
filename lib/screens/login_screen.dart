@@ -56,18 +56,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const Text(
                 'Přihlas se!', // Text under the logo
-                style: TextStyle(fontSize: 28, color: Colors.black),
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.black,
+                  fontFamily: 'Archabeta', // Custom font applied
+                ),
               ),
 
               const SizedBox(height: 20), // Add space between text and fields
               TextField(
                 controller: _emailController,
-                style: const TextStyle(color: Color(0xFFB8FF00)),
+                style: const TextStyle(
+                  color: Color(0xFFB8FF00),
+                  fontFamily: 'Archabeta', // Custom font applied
+                ),
                 decoration: InputDecoration(
-                  hintStyle: const TextStyle(color: Color(0xFF89BF00)),
+                  hintStyle: const TextStyle(
+                    color: Color(0xFF89BF00),
+                    fontFamily: 'Archabeta', // Custom font applied
+                  ),
                   hintText: 'Email',
                   filled: true,
-                  fillColor: Colors.black, // White inside the box
+                  fillColor: Colors.black,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(3.82),
                   ),
@@ -76,12 +86,18 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 20), // Spacing between text fields
               TextField(
                 controller: _passwordController,
-                style: const TextStyle(color: Color(0xFFB8FF00)),
+                style: const TextStyle(
+                  color: Color(0xFFB8FF00),
+                  fontFamily: 'Archabeta', // Custom font applied
+                ),
                 decoration: InputDecoration(
-                  hintStyle: const TextStyle(color: Color(0xFF89BF00)),
+                  hintStyle: const TextStyle(
+                    color: Color(0xFF89BF00),
+                    fontFamily: 'Archabeta', // Custom font applied
+                  ),
                   hintText: 'Heslo',
                   filled: true,
-                  fillColor: Colors.black, // White inside the box
+                  fillColor: Colors.black,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(3.82),
                   ),
@@ -91,8 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 30), // Spacing before the button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Colors.black, // Black background for the button
+                  backgroundColor: Colors.black, // Black background for the button
                   padding: const EdgeInsets.symmetric(
                       horizontal: 50, vertical: 15), // Adjust button size
                   shape: RoundedRectangleBorder(
@@ -102,11 +117,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: _login,
                 child: const Text(
                   'Login',
-                  style: TextStyle(color: Color(0xFFB8FF00)), // White text
+                  style: TextStyle(
+                    color: Color(0xFFB8FF00),
+                    fontFamily: 'Archabeta', // Custom font applied
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
-              const Text("Nemáš účet? Udělej si ho!"),
+              const Text(
+                "Nemáš účet? Udělej si ho!",
+                style: TextStyle(
+                  fontFamily: 'Archabeta', // Custom font applied
+                ),
+              ),
               TextButton(
                 onPressed: () {
                   // Navigate to the register screen
@@ -116,8 +139,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (context) => const RegisterScreen()),
                   );
                 },
-                child: const Text('Registrace',
-                    style: TextStyle(color: Colors.blue)),
+                child: const Text(
+                  'Registrace',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontFamily: 'Archabeta', // Custom font applied
+                  ),
+                ),
               ),
             ],
           ),
