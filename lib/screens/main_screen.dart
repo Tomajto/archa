@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'user_settings_screen.dart'; // Import the user settings screen
 import 'chat_screen.dart'; // Import the chat screen
-import 'resell_screen.dart'; // Import the resell screen
+import 'tickets_screen.dart'; // Import the tickets screen
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -43,73 +43,15 @@ class RootPage extends StatefulWidget {
 }
 
 class _RootPageState extends State<RootPage> {
-  // Function to show the play details dialog popup with buy option
-  void _showPlayDetailsDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Colors.black,
-          content: const Text(
-            '🎭 A Theatrical Odyssey of Love, Power, and Tragedy 🎭\n\n'
-            '🕯️ Venue: Grand Monarch Theatre\n'
-            '🕑 Showtimes:\n'
-            'Friday, October 20th - 7:30 PM\n'
-            'Saturday, October 21st - 2:00 PM & 7:30 PM\n'
-            'Sunday, October 22nd - 3:00 PM\n\n'
-            'ABOUT THE PLAY:\n'
-            'In a world where emotions are weaponized and love is a dangerous game, '
-            '"Eclipse of the Heart" takes you on a journey into the deepest recesses '
-            'of the human soul. Amidst political intrigue and forbidden romance, '
-            'alliances crumble, hearts shatter, and only the strongest will survive.\n\n'
-            'CAST:\n✨ Alyssa Morgan as Lena\n✨ Dominic Grey as Marcus\n'
-            '✨ Veronica Steele as Zara\n✨ Jared Knight as Orion\n\n'
-            'Special musical score by Sebastian Verano.\n\n'
-            '🔖 TICKETS AVAILABLE: 120\n'
-            '💰 PRICE: \$50',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-              fontFamily: 'Archabeta',
-            ),
-            textAlign: TextAlign.left,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text(
-                'Close',
-                style: TextStyle(color: Colors.orangeAccent),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                // Add ticket purchase logic here
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text(
-                'Buy Tickets',
-                style: TextStyle(color: Colors.orangeAccent),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title : Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-          const Text("ARCHA+"),
-
-        FlashTextWidget(
+            const Text("ARCHA+"),
+            FlashTextWidget(
               label: 'USER',
               onTapMessage: 'USER',
               size: 40,
@@ -117,47 +59,41 @@ class _RootPageState extends State<RootPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => const UserSettingsScreen()));
               },
             ),
-        ],)
-       
+          ],
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView( // Added SingleChildScrollView for scrolling
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Row with Play Title and Rating
-            Row(
-              children: [
-                // Play title button
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0x00000000), // Transparent background
-                    padding: const EdgeInsets.all(0), // Remove extra padding
-                  ),
-                  onPressed: () {
-                    _showPlayDetailsDialog(context); // Show play details popup with buy option
-                  },
-                  child: const Text(
-                    '🌟 "ECLIPSE OF THE HEART" 🌟',
-                    style: TextStyle(
-                      fontSize: 34, // Increase font size for the title
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontFamily: 'Archabeta',
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10), // Space between title and stars
-                // 4 out of 5 star rating
-                Row(
-                  children: List.generate(5, (index) {
-                    return Icon(
-                      index < 4 ? Icons.star : Icons.star_border, // 4 stars filled, 1 empty
-                      color: Colors.orangeAccent,
-                    );
-                  }),
-                ),
-              ],
+          children: const [
+            ScreenplayWidget(
+              title: 'The Tempest',
+              description:
+                  'A shipwreck, a magical island, a sorcerer, and spirits.',
+              venue: 'The Globe Theatre',
+              showtimes: '19:00, 20:00, 21:00',
+              price: 250,
+              availableTickets: 100,
+              rating: 4.5,
+            ),
+            ScreenplayWidget(
+              title: 'Romeo and Juliet',
+              description:
+                  'Two star-crossed lovers from feuding families fall in love.',
+              venue: 'The Globe Theatre',
+              showtimes: '19:00, 20:00, 21:00',
+              price: 200,
+              availableTickets: 50,
+              rating: 4.0,
+            ),
+            ScreenplayWidget(
+              title: 'Macbeth',
+              description:
+                  'A Scottish general becomes king after hearing a prophecy.',
+              venue: 'The Globe Theatre',
+              showtimes: '19:00, 20:00, 21:00',
+              price: 300,
+              availableTickets: 75,
+              rating: 4.2,
             ),
           ],
         ),
@@ -179,7 +115,6 @@ class _RootPageState extends State<RootPage> {
               onTapMessage: 'CHAT',
               size: 30,
               onTap: () {
-                // Navigate to chat screen
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -189,15 +124,14 @@ class _RootPageState extends State<RootPage> {
               },
             ),
             FlashTextWidget(
-              label: 'RESELL',
-              onTapMessage: 'RESELL',
+              label: 'TICKETS',
+              onTapMessage: 'TICKETS',
               size: 30,
               onTap: () {
-                // Navigate to resell screen
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const ResellScreen(),
+                    builder: (context) => TicketsScreen(),
                   ),
                 );
               },
@@ -259,6 +193,110 @@ class _FlashTextWidgetState extends State<FlashTextWidget> {
         child: Text(
           widget.label,
           style: TextStyle(fontSize: widget.size, color: _currentColor),
+        ),
+      ),
+    );
+  }
+}
+
+// Define the ScreenplayWidget class that expands on click
+class ScreenplayWidget extends StatefulWidget {
+  final String title;
+  final String description;
+  final String venue;
+  final String showtimes;
+  final double price;
+  final int availableTickets;
+  final double rating;
+
+  const ScreenplayWidget({
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.venue,
+    required this.showtimes,
+    required this.price,
+    required this.availableTickets,
+    required this.rating,
+  }) : super(key: key);
+
+  @override
+  _ScreenplayWidgetState createState() => _ScreenplayWidgetState();
+}
+
+class _ScreenplayWidgetState extends State<ScreenplayWidget> {
+  bool _expanded = false; // Track whether details are expanded
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _expanded = !_expanded; // Toggle the expanded state
+        });
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        color: Colors.grey[900],
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '🎭 ${widget.title} 🎭',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orangeAccent,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                widget.description,
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                '🕯️ Venue: ${widget.venue}',
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                '🕑 Showtimes: ${widget.showtimes}',
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                '💰 Ticket Price: ${widget.price} Kč',
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                '🔖 Available Tickets: ${widget.availableTickets}',
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              const SizedBox(height: 10),
+              // Display rating as stars
+              Row(
+                children: List.generate(5, (index) {
+                  return Icon(
+                    index < widget.rating ? Icons.star : Icons.star_border,
+                    color: Colors.orangeAccent,
+                  );
+                }),
+              ),
+              if (_expanded) ...[
+                const SizedBox(height: 10),
+                // Expanded details
+                Text(
+                  'This is where additional details about the play can be shown, such as actors, directors, and special effects.',
+                  style: const TextStyle(fontSize: 16, color: Colors.orangeAccent),
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );
