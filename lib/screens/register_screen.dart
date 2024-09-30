@@ -23,6 +23,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
       // After successful registration, navigate to login screen
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
@@ -34,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFB8FF00), // Light grey background
+      backgroundColor: const Color(0xFFB8FF00), // Light grey background
       body: SingleChildScrollView( // Add SingleChildScrollView for scrolling
         child: Padding(
           padding: const EdgeInsets.all(16.0),

@@ -4,7 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart'; // Import the login screen to navigate after logout
 
 class UserSettingsScreen extends StatefulWidget {
+  const UserSettingsScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _UserSettingsScreenState createState() => _UserSettingsScreenState();
 }
 
@@ -35,8 +38,19 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('username', _usernameController.text);
     await prefs.setString('language', _selectedLanguage); // Save the selected language
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Settings saved!')),
+      const SnackBar(content: Text('Settings saved!')),
+    );
+  }
+
+  // Logout user and navigate to login screen
+  void _logout() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -44,26 +58,36 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Settings'),
+        title: const Text('User Settings'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: _logout, // Logout button action
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Username input field
+            // Username input field with white text
             TextField(
               controller: _usernameController,
-              decoration: const InputDecoration(
+              style: const TextStyle(color: Colors.white), // White text inside username input
+              decoration: InputDecoration(
                 labelText: 'Enter your name',
-                border: OutlineInputBorder(),
+                labelStyle: const TextStyle(color: Colors.white), // Label in white
+                border: const OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.grey[800], // Set background color for the input field
               ),
             ),
             const SizedBox(height: 20),
             
             // Language selection dropdown
-            Text(
+            const Text(
               'Select language:',
-              style: const TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 10),
             Container(
@@ -114,10 +138,13 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
             
             const SizedBox(height: 20),
 
-            // Save button
+            // Save button with orange background and black text
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.black, backgroundColor: const Color(0xFFFF4C00), // Black text
+              ),
               onPressed: _saveSettings,
-              child: Text('Save Settings'),
+              child: const Text('Save Settings'),
             ),
           ],
         ),

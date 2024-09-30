@@ -57,7 +57,7 @@ class _RootPageState extends State<RootPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => UserSettingsScreen()),
+                      builder: (context) => const UserSettingsScreen()),
                 );
               },
               ),
@@ -84,7 +84,7 @@ class _RootPageState extends State<RootPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ChatScreen()),
+                      builder: (context) => const ChatScreen()),
                 );
               },
             ),
@@ -112,6 +112,7 @@ class FlashTextWidget extends StatefulWidget {
       required this.onTap});
 
   @override
+  // ignore: library_private_types_in_public_api
   _FlashTextWidgetState createState() => _FlashTextWidgetState();
 }
 
