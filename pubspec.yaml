@@ -31,3 +31,4 @@ flutter:
   assets:
     - assets/apple_icon.png
     - assets/google_icon.png
+    - assets/logo.png

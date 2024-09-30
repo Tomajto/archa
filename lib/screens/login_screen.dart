@@ -26,7 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => const MainScreen()), // Main screen
+        MaterialPageRoute(
+            builder: (context) => const MainScreen()), // Main screen
       );
     } catch (e) {
       print("Login Error: $e");
@@ -42,16 +43,22 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.lock, // Lock icon at the top
-              size: 100,
-              color: Colors.black,
+            const SizedBox(height: 60), // Space above the logo
+
+            // Display the logo (Replacing the lock icon)
+            Image.asset(
+              'assets/logo.png', // Path to your logo image in the assets folder
+              height: 120, // Adjust the height as needed
             ),
-            const SizedBox(height: 15), // Space between the lock and text
+
+            const SizedBox(height: 50), // Space between logo and text
+
             const Text(
-              'Přihlas se!', // Text under lock icon
-              style: TextStyle(fontSize: 18, color: Colors.black),
+              'Přihlas se!', // Text under the logo
+              style: TextStyle(fontSize: 28, color: Colors.black),
             ),
+
+            const SizedBox(height: 20), // Add space between text and fields
             const SizedBox(height: 15), // Add space between lock and fields
             TextField(
               controller: _emailController,
@@ -80,8 +87,10 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 30), // Spacing before the button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black, // Black background for the button
-                padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15), // Adjust button size
+                backgroundColor:
+                    Colors.black, // Black background for the button
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 50, vertical: 15), // Adjust button size
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -99,10 +108,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 // Navigate to the register screen
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const RegisterScreen()),
                 );
               },
-              child: const Text('Registrace', style: TextStyle(color: Colors.blue)),
+              child: const Text('Registrace',
+                  style: TextStyle(color: Colors.blue)),
             ),
           ],
         ),

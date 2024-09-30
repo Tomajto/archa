@@ -41,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 30), // Space above the logo
+              const SizedBox(height: 100), // Space above the logo
 
               // Display the logo (Replacing the lock icon)
               Image.asset(
@@ -49,14 +49,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 height: 120, // Adjust the height as needed
               ),
 
-              const SizedBox(height: 20), // Space between logo and text
+              const SizedBox(height: 50), // Space between logo and text
 
               const Text(
                 'Registruj se!', // Text under the logo
-                style: TextStyle(fontSize: 18, color: Colors.black),
+                style: TextStyle(fontSize: 28, color: Colors.black),
               ),
               
-              const SizedBox(height: 15), // Add space between text and fields
+              const SizedBox(height: 20), // Add space between text and fields
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
