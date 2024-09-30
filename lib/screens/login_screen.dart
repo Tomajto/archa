@@ -38,85 +38,89 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFB8FF00), // Light grey background
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start, // Align to the top
-          children: [
-            const SizedBox(height: 50), // Space above the logo
+      body: SingleChildScrollView( // Add SingleChildScrollView for scrolling
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start, // Align to the top
+            children: [
+              const SizedBox(height: 50), // Space above the logo
 
-            // Display the logo (Replacing the lock icon)
-            Image.asset(
-              'assets/logo.png', // Path to your logo image in the assets folder
-              height: 250, // Adjust the height as needed
-            ),
+              // Display the logo (Replacing the lock icon)
+              Image.asset(
+                'assets/logo.png', // Path to your logo image in the assets folder
+                height: 250, // Adjust the height as needed
+              ),
 
-            const SizedBox(height: 100), // Space between logo and text
+              const SizedBox(height: 100), // Space between logo and text
 
-            const Text(
-              'Přihlas se!', // Text under the logo
-              style: TextStyle(fontSize: 28, color: Colors.black),
-            ),
+              const Text(
+                'Přihlas se!', // Text under the logo
+                style: TextStyle(fontSize: 28, color: Colors.black),
+              ),
 
-            const SizedBox(height: 20), // Add space between text and fields
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelStyle: const TextStyle(color: Color(0xFFB8FF00)),
-                labelText: 'Email',
-                filled: true,
-                fillColor: Colors.black, // White inside the box
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+              const SizedBox(height: 20), // Add space between text and fields
+              TextField(
+                controller: _emailController,
+                style: const TextStyle(color: Color(0xFFB8FF00)),
+                decoration: InputDecoration(
+                  hintStyle: const TextStyle(color: Color(0xFF89BF00)),
+                  hintText: 'Email',
+                  filled: true,
+                  fillColor: Colors.black, // White inside the box
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(3.82),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20), // Spacing between text fields
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelStyle: const TextStyle(color: Color(0xFFB8FF00)),
-                labelText: 'Heslo',
-                filled: true,
-                fillColor: Colors.black, // White inside the box
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+              const SizedBox(height: 20), // Spacing between text fields
+              TextField(
+                controller: _passwordController,
+                style: const TextStyle(color: Color(0xFFB8FF00)),
+                decoration: InputDecoration(
+                  hintStyle: const TextStyle(color: Color(0xFF89BF00)),
+                  hintText: 'Heslo',
+                  filled: true,
+                  fillColor: Colors.black, // White inside the box
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(3.82),
+                  ),
+                ),
+                obscureText: true,
+              ),
+              const SizedBox(height: 30), // Spacing before the button
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Colors.black, // Black background for the button
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 50, vertical: 15), // Adjust button size
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3.82),
+                  ),
+                ),
+                onPressed: _login,
+                child: const Text(
+                  'Login',
+                  style: TextStyle(color: Color(0xFFB8FF00)), // White text
                 ),
               ),
-              obscureText: true,
-            ),
-            const SizedBox(height: 30), // Spacing before the button
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    Colors.black, // Black background for the button
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 50, vertical: 15), // Adjust button size
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+              const SizedBox(height: 20),
+              const Text("Nemáš účet? Udělej si ho!"),
+              TextButton(
+                onPressed: () {
+                  // Navigate to the register screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RegisterScreen()),
+                  );
+                },
+                child: const Text('Registrace',
+                    style: TextStyle(color: Colors.blue)),
               ),
-              onPressed: _login,
-              child: const Text(
-                'Login',
-                style: TextStyle(color: Color(0xFFB8FF00)), // White text
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text("Nemáš účet? Udělej si ho!"),
-            TextButton(
-              onPressed: () {
-                // Navigate to the register screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const RegisterScreen()),
-                );
-              },
-              child: const Text('Registrace',
-                  style: TextStyle(color: Colors.blue)),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
