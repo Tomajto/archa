@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
-            builder: (context) => const MainScreen()), // Main screen
+            builder: (context) => MainScreen()), // Main screen
       );
     } catch (e) {
       print("Login Error: $e");

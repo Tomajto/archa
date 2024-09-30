@@ -1,7 +1,6 @@
-// ignore: unused_import
-import 'package:archa/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login_screen.dart'; // Import the login screen to navigate after logout
 
@@ -9,15 +8,13 @@ class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _UserSettingsScreenState createState() => _UserSettingsScreenState();
 }
 
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
   final TextEditingController _usernameController = TextEditingController();
-
-  // Language selector variables
   String _selectedLanguage = 'English'; // Default language
+  bool _isChecking = false; // To show a loading indicator during username check
 
   @override
   void initState() {
@@ -35,29 +32,83 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     });
   }
 
-  // Save username and language to SharedPreferences
-  void _saveSettings() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('username', _usernameController.text);
-    await prefs.setString(
-        'language', _selectedLanguage); // Save the selected language
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Settings saved!',
-          style: TextStyle(color: Colors.black, fontSize: 20),
+  // Check if the username is available in Firestore
+  Future<bool> _isUsernameAvailable(String username) async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: username)
+        .get();
+
+    return querySnapshot.docs.isEmpty; // True if no matching username found
+  }
+
+  // Save username and language to SharedPreferences and Firestore
+  Future<void> _saveSettings() async {
+    final username = _usernameController.text.trim();
+
+    if (username.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Username cannot be empty!',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
         ),
-        backgroundColor: Color(0xFFFF4C00),
-      ),
-    );
+      );
+      return;
+    }
+
+    setState(() {
+      _isChecking = true; // Show loading indicator
+    });
+
+    // Check if the username is available
+    bool isAvailable = await _isUsernameAvailable(username);
+
+    setState(() {
+      _isChecking = false; // Hide loading indicator
+    });
+
+    if (isAvailable) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('username', username);
+      await prefs.setString('language', _selectedLanguage);
+
+      // Save the username in Firestore (you may have a different structure)
+      FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set({
+        'username': username,
+        'language': _selectedLanguage,
+      });
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Settings saved!',
+            style: TextStyle(color: Colors.black, fontSize: 20),
+          ),
+          backgroundColor: Color(0xFFFF4C00),
+        ),
+      );
+    } else {
+      // Show error message if username is taken
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Username is already taken!',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   // Logout user and navigate to login screen
   void _logout() async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
-      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
@@ -96,13 +147,13 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                       borderSide: BorderSide(color: Color(0xFFFF4C00))),
                   border: const OutlineInputBorder(),
                   filled: true,
-                  fillColor: Colors
-                      .grey[900], // Set background color for the input field
+                  fillColor: Colors.grey[900], // Set background color for the input field
                 ),
               ),
             ),
             const SizedBox(height: 20),
-
+            // Show loading indicator while checking username
+            if (_isChecking) const CircularProgressIndicator(),
             const Spacer(),
             Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
               ElevatedButton(
@@ -134,9 +185,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-            ]
-                // Save button with orange background and black text
-                )
+            ])
           ],
         ),
       ),

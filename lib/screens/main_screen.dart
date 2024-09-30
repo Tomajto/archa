@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'user_settings_screen.dart'; // Import the user settings screen
 import 'chat_screen.dart'; // Import the chat screen
 import 'tickets_screen.dart'; // Import the tickets screen
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firebase Firestore
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -42,6 +44,32 @@ class RootPage extends StatefulWidget {
   State<RootPage> createState() => _RootPageState();
 }
 
+class FlashTextWidget extends StatelessWidget {
+  final String label;
+  final String onTapMessage;
+  final double? size;
+  final VoidCallback onTap;
+
+  const FlashTextWidget({
+    Key? key,
+    required this.label,
+    required this.onTapMessage,
+    required this.size,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap, // This is where your `onTap` is used
+      child: Text(
+        label,
+        style: TextStyle(fontSize: size ?? 20.0),
+      ),
+    );
+  }
+}
+
 class _RootPageState extends State<RootPage> {
   String _selectedFlag = 'assets/vlajka_cr.png'; // Default flag
 
@@ -51,6 +79,7 @@ class _RootPageState extends State<RootPage> {
       _selectedFlag = newFlag;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +103,11 @@ class _RootPageState extends State<RootPage> {
                   value: 'assets/vlajka_uk.png',
                   child: Row(
                     children: [
-                      Image.asset('assets/vlajka_uk.png', width: 24, height: 24),
+                      Image.asset('assets/vlajka_uk.png',
+                          width: 24, height: 24),
                       const SizedBox(width: 8),
-                      const Text("English", style: TextStyle(color: Colors.black)),
+                      const Text("English",
+                          style: TextStyle(color: Colors.black)),
                     ],
                   ),
                 ),
@@ -84,9 +115,11 @@ class _RootPageState extends State<RootPage> {
                   value: 'assets/vlajka_cr.png',
                   child: Row(
                     children: [
-                      Image.asset('assets/vlajka_cr.png', width: 24, height: 24),
+                      Image.asset('assets/vlajka_cr.png',
+                          width: 24, height: 24),
                       const SizedBox(width: 8),
-                      const Text("Čeština", style: TextStyle(color: Colors.black)),
+                      const Text("Čeština",
+                          style: TextStyle(color: Colors.black)),
                     ],
                   ),
                 ),
@@ -94,9 +127,11 @@ class _RootPageState extends State<RootPage> {
                   value: 'assets/vlajka_viet.png',
                   child: Row(
                     children: [
-                      Image.asset('assets/vlajka_viet.png', width: 24, height: 24),
+                      Image.asset('assets/vlajka_viet.png',
+                          width: 24, height: 24),
                       const SizedBox(width: 8),
-                      const Text("Vietnamština", style: TextStyle(color: Colors.black)),
+                      const Text("Vietnamština",
+                          style: TextStyle(color: Colors.black)),
                     ],
                   ),
                 ),
@@ -105,7 +140,7 @@ class _RootPageState extends State<RootPage> {
           ],
         ),
       ),
-      body: const SingleChildScrollView( // Added SingleChildScrollView for scrolling
+      body: const SingleChildScrollView(
         child: Column(
           children: [
             ScreenplayWidget(
@@ -117,7 +152,7 @@ class _RootPageState extends State<RootPage> {
               price: 250,
               availableTickets: 100,
               rating: 4.5,
-              details: "fuck nigger",
+              details: "Details about The Tempest.",
             ),
             ScreenplayWidget(
               title: 'Romeo and Juliet',
@@ -128,7 +163,7 @@ class _RootPageState extends State<RootPage> {
               price: 200,
               availableTickets: 50,
               rating: 4.0,
-              details: "pterumcaca",
+              details: "Details about Romeo and Juliet.",
             ),
             ScreenplayWidget(
               title: 'Macbeth',
@@ -139,7 +174,7 @@ class _RootPageState extends State<RootPage> {
               price: 300,
               availableTickets: 75,
               rating: 4.2,
-              details: "pterumcacas",
+              details: "Details about Macbeth.",
             ),
           ],
         ),
@@ -155,7 +190,10 @@ class _RootPageState extends State<RootPage> {
               onTapMessage: 'USER',
               size: 30,
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const UserSettingsScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const UserSettingsScreen()));
               },
             ),
             FlashTextWidget(
@@ -191,64 +229,7 @@ class _RootPageState extends State<RootPage> {
   }
 }
 
-class FlashTextWidget extends StatefulWidget {
-  final String label;
-  final String onTapMessage;
-  final double? size;
-  final VoidCallback onTap;
-
-  const FlashTextWidget({
-    super.key,
-    required this.label,
-    required this.onTapMessage,
-    required this.size,
-    required this.onTap,
-  });
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _FlashTextWidgetState createState() => _FlashTextWidgetState();
-}
-
-class _FlashTextWidgetState extends State<FlashTextWidget> {
-  Color _currentColor = const Color(0xFF000000);
-  final Color _flashColor = const Color(0xFF7F2500);
-
-  void _onTapDown(TapDownDetails details) {
-    setState(() {
-      _currentColor = _flashColor;
-    });
-  }
-
-  void _onTapUp(TapUpDetails details) {
-    setState(() {
-      _currentColor = const Color(0xFF000000);
-    });
-    widget.onTap();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: _onTapDown,
-      onTapUp: _onTapUp,
-      onTapCancel: () {
-        setState(() {
-          _currentColor = const Color(0xFF000000);
-        });
-      },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        child: Text(
-          widget.label,
-          style: TextStyle(fontSize: widget.size, color: _currentColor),
-        ),
-      ),
-    );
-  }
-}
-
-class ScreenplayWidget extends StatefulWidget {
+class ScreenplayWidget extends StatelessWidget {
   final String title;
   final String description;
   final String venue;
@@ -256,7 +237,7 @@ class ScreenplayWidget extends StatefulWidget {
   final double price;
   final int availableTickets;
   final double rating;
-  final String details; // Customizable details for each screenplay
+  final String details;
 
   const ScreenplayWidget({
     super.key,
@@ -267,24 +248,29 @@ class ScreenplayWidget extends StatefulWidget {
     required this.price,
     required this.availableTickets,
     required this.rating,
-    required this.details, // Accept customizable details
+    required this.details,
   });
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _ScreenplayWidgetState createState() => _ScreenplayWidgetState();
-}
-
-class _ScreenplayWidgetState extends State<ScreenplayWidget> {
-  bool _expanded = false; // Track whether details are expanded
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _expanded = !_expanded; // Toggle the expanded state
-        });
+        // Navigate to a new screen with more details and the buy/rate/comment option
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GameDetailsScreen(
+              title: title,
+              description: description,
+              venue: venue,
+              showtimes: showtimes,
+              price: price,
+              availableTickets: availableTickets,
+              rating: rating,
+              details: details,
+            ),
+          ),
+        );
       },
       child: Card(
         margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -296,7 +282,7 @@ class _ScreenplayWidgetState extends State<ScreenplayWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '🎭 ${widget.title} 🎭',
+                '🎭 $title 🎭',
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -305,49 +291,131 @@ class _ScreenplayWidgetState extends State<ScreenplayWidget> {
               ),
               const SizedBox(height: 10),
               Text(
-                widget.description,
+                description,
                 style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
               const SizedBox(height: 10),
               Text(
-                '🕯️ Venue: ${widget.venue}',
+                '🕯️ Venue: $venue',
                 style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
               const SizedBox(height: 5),
               Text(
-                '🕑 Showtimes: ${widget.showtimes}',
+                '🕑 Showtimes: $showtimes',
                 style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
               const SizedBox(height: 5),
               Text(
-                '💰 Ticket Price: ${widget.price} Kč',
+                '💰 Ticket Price: $price Kč',
                 style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
               const SizedBox(height: 5),
               Text(
-                '🔖 Available Tickets: ${widget.availableTickets}',
+                '🔖 Available Tickets: $availableTickets',
                 style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
               const SizedBox(height: 10),
-              // Display rating as stars
               Row(
                 children: List.generate(5, (index) {
                   return Icon(
-                    index < widget.rating ? Icons.star : Icons.star_border,
+                    index < rating ? Icons.star : Icons.star_border,
                     color: Colors.orangeAccent,
                   );
                 }),
               ),
-              if (_expanded) ...[
-                const SizedBox(height: 10),
-                // Expanded customizable details
-                Text(
-                  widget.details,
-                  style: const TextStyle(fontSize: 16, color: Colors.orangeAccent),
-                ),
-              ],
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class GameDetailsScreen extends StatelessWidget {
+  final String title;
+  final String description;
+  final String venue;
+  final String showtimes;
+  final double price;
+  final int availableTickets;
+  final double rating;
+  final String details;
+
+  GameDetailsScreen({
+    required this.title,
+    required this.description,
+    required this.venue,
+    required this.showtimes,
+    required this.price,
+    required this.availableTickets,
+    required this.rating,
+    required this.details,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Description: $description',
+                style: const TextStyle(fontSize: 18, color: Colors.white)),
+            const SizedBox(height: 10),
+            Text('Venue: $venue',
+                style: const TextStyle(fontSize: 18, color: Colors.white)),
+            const SizedBox(height: 10),
+            Text('Showtimes: $showtimes',
+                style: const TextStyle(fontSize: 18, color: Colors.white)),
+            const SizedBox(height: 10),
+            Text('Ticket Price: $price Kč',
+                style: const TextStyle(fontSize: 18, color: Colors.white)),
+            const SizedBox(height: 10),
+            Text('Available Tickets: $availableTickets',
+                style: const TextStyle(fontSize: 18, color: Colors.white)),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    Color(0xFFff4c00), // Button background color (replaces primary)
+              ),
+              onPressed: () {
+                // Handle ticket buying logic here
+              },
+              child: const Text('Buy Ticket',
+                  style: const TextStyle(fontSize: 18, color: Colors.black)),
+            ),
+            const SizedBox(height: 20),
+            const Text('Rate this event:',
+                style: TextStyle(fontSize: 18, color: Colors.white)),
+            Row(
+              children: List.generate(5, (index) {
+                return Icon(
+                  index < rating ? Icons.star : Icons.star_border,
+                  color: Colors.orangeAccent,
+                );
+              }),
+            ),
+            const SizedBox(height: 20),
+            const TextField(
+              decoration: InputDecoration(labelText: 'Leave a Comment'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    Color(0xFFff4c00), // Button background color (replaces primary)
+              ),
+              onPressed: () {
+                // Handle comment submission here
+              },
+              child: const Text('Submit Comment', style: TextStyle(fontSize: 18, color: Colors.black)),
+            ),
+          ],
         ),
       ),
     );
