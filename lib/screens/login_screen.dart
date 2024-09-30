@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: 'Heslo',
                 filled: true,
                 fillColor: Colors.white, // White inside the box
                 border: OutlineInputBorder(
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   MaterialPageRoute(builder: (context) => const RegisterScreen()),
                 );
               },
-              child: const Text('Register', style: TextStyle(color: Colors.blue)),
+              child: const Text('Registrace', style: TextStyle(color: Colors.blue)),
             ),
           ],
         ),

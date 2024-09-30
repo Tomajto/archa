@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                labelText: 'Password',
+                labelText: 'Heslo',
                 filled: true,
                 fillColor: Colors.white, // White inside the box
                 border: OutlineInputBorder(

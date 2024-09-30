@@ -37,7 +37,7 @@ class UserSettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              'Logged in as: $email',
+              'Přihášený jako: $email',
               style: const TextStyle(fontSize: 18),
             ),
             // Add other settings options below
