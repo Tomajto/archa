@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, duplicate_ignore
+
 import 'package:flutter/material.dart';
 import 'user_settings_screen.dart'; // Import the user settings screen
 import 'chat_screen.dart'; // Import the chat screen
@@ -346,6 +348,7 @@ class GameDetailsScreen extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _GameDetailsScreenState createState() => _GameDetailsScreenState();
 }
 
@@ -398,8 +401,9 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
         });
 
         // Optionally show a success message
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Ticket purchased successfully!')),
+          const SnackBar(content: Text('Ticket purchased successfully!')),
         );
       } catch (e) {
         setState(() {
@@ -407,6 +411,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
         });
 
         // Show an error message
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to purchase ticket: $e')),
         );
@@ -417,7 +422,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User not logged in!')),
+        const SnackBar(content: Text('User not logged in!')),
       );
     }
   }
@@ -440,7 +445,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Comment submitted successfully!')),
+          const SnackBar(content: Text('Comment submitted successfully!')),
         );
 
         // Clear the comment field after submission
@@ -453,7 +458,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User not logged in!')),
+        const SnackBar(content: Text('User not logged in!')),
       );
     }
   }
@@ -508,7 +513,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF4C00),
                   ),
-                  child: const Text('Buy Ticket'),
+                  child: const Text('Buy Ticket', style: TextStyle(color: Colors.black)),
                 ),
                 const SizedBox(height: 20),
                 TextField(
@@ -531,7 +536,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF4C00),
                   ),
-                  child: const Text('Submit Comment'),
+                  child: const Text('Submit Comment', style: TextStyle(color: Colors.black)),
                 ),
                 const SizedBox(height: 20),
 
@@ -558,6 +563,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                           String email = commentData['email'];
                           String comment = commentData['comment'];
                           Timestamp? timestamp = commentData['timestamp'] as Timestamp?;
+                          // ignore: unused_local_variable
                           DateTime date = timestamp?.toDate() ?? DateTime.now();
 
                           String formattedDate =

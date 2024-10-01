@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,7 +29,6 @@ class _ChatScreenState extends State<ChatScreen> {
     _fetchChatRooms();
   }
 
-  // Load username from SharedPreferences
   void _loadUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -48,17 +49,14 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  // Create a new chat room
   void _createChatRoom() async {
     if (_roomNameController.text.isEmpty || _participantController.text.isEmpty) {
       return;
     }
 
-    // Split participants by commas
     _participants = _participantController.text.split(',').map((e) => e.trim()).toList();
-    _participants.add(_username!); // Add the current user to the participants list
+    _participants.add(_username!);
 
-    // Create the room in Firestore
     DocumentReference roomRef =
         await FirebaseFirestore.instance.collection('chats').add({
       'roomName': _roomNameController.text,
@@ -66,15 +64,13 @@ class _ChatScreenState extends State<ChatScreen> {
     });
 
     setState(() {
-      _selectedRoom = roomRef.id; // Automatically open the newly created room
-      _participants = []; // Clear participants list
+      _selectedRoom = roomRef.id;
+      _participants = [];
     });
 
-    // ignore: use_build_context_synchronously
-    Navigator.pop(context); // Close the dialog
+    Navigator.pop(context);
   }
 
-  // Send message to Firestore
   void _sendMessage() {
     if (_messageController.text.isEmpty || _selectedRoom == null) return;
 
@@ -91,7 +87,6 @@ class _ChatScreenState extends State<ChatScreen> {
     _messageController.clear();
   }
 
-  // Dialog to create a new chat room
   Future<void> _showCreateRoomDialog() async {
     return showDialog<void>(
       context: context,
@@ -141,6 +136,33 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  // Leave chat room logic
+  void _leaveChatRoom(String roomId) async {
+    DocumentSnapshot roomDoc =
+        await FirebaseFirestore.instance.collection('chats').doc(roomId).get();
+    List<dynamic> participants =
+        (roomDoc.data() as Map<String, dynamic>)['participants'];
+
+    participants.remove(_username);
+
+    if (participants.isEmpty) {
+      await FirebaseFirestore.instance.collection('chats').doc(roomId).delete();
+    } else {
+      await FirebaseFirestore.instance
+          .collection('chats')
+          .doc(roomId)
+          .update({'participants': participants});
+    }
+
+    setState(() {
+      if (_selectedRoom == roomId) {
+        _selectedRoom = null;
+      }
+      _fetchChatRooms();  // Refresh the chat room list after leaving
+    });
+  }
+
+  // Build the UI to display chat rooms and messages
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,7 +172,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: _showCreateRoomDialog, // Open dialog to create room
+            onPressed: _showCreateRoomDialog,
           ),
         ],
       ),
@@ -162,8 +184,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemCount: _chatRooms.length,
                     itemBuilder: (context, index) {
                       var room = _chatRooms[index];
-
-                      // Safely access roomName, provide default value if missing
                       String roomName = room.data() != null &&
                               (room.data() as Map<String, dynamic>)
                                   .containsKey('roomName')
@@ -177,20 +197,49 @@ class _ChatScreenState extends State<ChatScreen> {
                               as Map<String, dynamic>)['participants']
                           : [];
 
-                      return ListTile(
-                        title: Text(
-                          roomName,
-                          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                      return Container(
+                        margin: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
-                        subtitle: Text(
-                          'Participants: ${participants.join(', ')}',
-                          style: const TextStyle(color: Colors.white),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedRoom = room.id; // Open the selected room
+                                  });
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      roomName,
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Participants: ${participants.join(', ')}',
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.exit_to_app, color: Colors.red),
+                              onPressed: () {
+                                _leaveChatRoom(room.id); // Remove user from the room
+                              },
+                            ),
+                          ],
                         ),
-                        onTap: () {
-                          setState(() {
-                            _selectedRoom = room.id; // Set selected room
-                          });
-                        },
                       );
                     },
                   ),
@@ -236,7 +285,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                   ),
                 ),
-                // Input field to send a message
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(

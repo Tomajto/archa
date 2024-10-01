@@ -8,11 +8,12 @@ class TicketsScreen extends StatefulWidget {
   const TicketsScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _TicketsScreenState createState() => _TicketsScreenState();
 }
 
 class _TicketsScreenState extends State<TicketsScreen> {
-  User? _user = FirebaseAuth.instance.currentUser;
+  final User? _user = FirebaseAuth.instance.currentUser;
 
   // Fetch tickets from Firestore where the user has bought tickets
   Future<List<QueryDocumentSnapshot>> _fetchTickets() async {
@@ -252,7 +253,7 @@ Future<void> _resellTickets(
                         child: Text(
                           title,
                           style: const TextStyle(
-                            color: const Color(0xFFFF4C00),
+                            color: Color(0xFFFF4C00),
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
@@ -335,7 +336,7 @@ class ResellTicketDialog extends StatelessWidget {
   final Color inputFillColor;
   final Color buttonTextColor;
 
-  ResellTicketDialog({
+  const ResellTicketDialog({
     super.key,
     required this.title,
     required this.availableTickets,
@@ -353,10 +354,10 @@ class ResellTicketDialog extends StatelessWidget {
     double price = 0;
 
     return AlertDialog(
-      backgroundColor: Color(0xFF000000), // Apply background color
+      backgroundColor: const Color(0xFF000000), // Apply background color
       title: Text(
         'Resell Tickets for $title',
-        style: TextStyle(color: Color(0xFFFF4C00)), // Apply title color
+        style: const TextStyle(color: Color(0xFFFF4C00)), // Apply title color
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -414,9 +415,9 @@ class ResellTicketDialog extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text(
+                  child: const Text(
                     'Cancel',
-                    style: TextStyle(color: const Color(0xFFFF4C00)), // Button text color
+                    style: TextStyle(color: Color(0xFFFF4C00)), // Button text color
                   ),
                 ),
               ),
@@ -480,7 +481,7 @@ class NumberGridScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TicketImageScreen(),
+                    builder: (context) => const TicketImageScreen(),
                   ),
                 );
               },
@@ -500,6 +501,8 @@ class NumberGridScreen extends StatelessWidget {
 }
 
 class TicketImageScreen extends StatelessWidget {
+  const TicketImageScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
