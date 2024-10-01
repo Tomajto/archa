@@ -18,6 +18,7 @@ dependencies:
   firebase_auth: ^4.7.0
   shared_preferences: ^2.2.3
   cloud_firestore: ^4.17.5
+  intl: ^0.19.0
 
 
 
@@ -43,6 +44,7 @@ flutter:
     - assets/fonts/Archabeta-Medium.otf
     - assets/fonts/Archabeta-Bold.otf
     - assets/fonts/Archabeta-ExtraBold.otf
+    - assets/listek.png
   fonts:
     - family: Archabeta
       fonts:

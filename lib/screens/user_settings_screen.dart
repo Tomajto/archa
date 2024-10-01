@@ -8,6 +8,7 @@ class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _UserSettingsScreenState createState() => _UserSettingsScreenState();
 }
 
@@ -82,6 +83,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       });
 
       // Show success message
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -93,6 +95,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       );
     } else {
       // Show error message if username is taken
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -109,6 +112,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   void _logout() async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),
     );

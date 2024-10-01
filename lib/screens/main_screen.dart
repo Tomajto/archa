@@ -4,7 +4,7 @@ import 'chat_screen.dart'; // Import the chat screen
 import 'tickets_screen.dart'; // Import the tickets screen
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firebase Firestore
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
-
+import 'package:intl/intl.dart'; // For formatting dates
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
@@ -51,17 +51,17 @@ class FlashTextWidget extends StatelessWidget {
   final VoidCallback onTap;
 
   const FlashTextWidget({
-    Key? key,
+    super.key,
     required this.label,
     required this.onTapMessage,
     required this.size,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // This is where your `onTap` is used
+      onTap: onTap,
       child: Text(
         label,
         style: TextStyle(fontSize: size ?? 20.0),
@@ -144,37 +144,37 @@ class _RootPageState extends State<RootPage> {
         child: Column(
           children: [
             ScreenplayWidget(
-              title: 'The Tempest',
+              title: 'Burkicom: Slunce',
               description:
-                  'A shipwreck, a magical island, a sorcerer, and spirits.',
-              venue: 'The Globe Theatre',
-              showtimes: '19:00, 20:00, 21:00',
-              price: 250,
+                  'Soubor současného fyzického divadla Burkicom uvede svou novinku Slunce, která je apokalyptickou sci-fi o lidskosti...',
+              venue: 'ARCHA+',
+              showtimes: 'Čt 10.10. 20:00 | Pá 11.10. 20:00 ',
+              price: 550,
               availableTickets: 100,
               rating: 4.5,
-              details: "Details about The Tempest.",
+              details: "",
             ),
             ScreenplayWidget(
-              title: 'Romeo and Juliet',
+              title: 'Bby Eco + Casey MQ',
               description:
-                  'Two star-crossed lovers from feuding families fall in love.',
-              venue: 'The Globe Theatre',
-              showtimes: '19:00, 20:00, 21:00',
-              price: 200,
+                  'Hyperpopové bublinky plné čirých emocí a návraty k přírodě...',
+              venue: 'ARCHA+',
+              showtimes: 'St 09.10. 21:00',
+              price: 400,
               availableTickets: 50,
               rating: 4.0,
-              details: "Details about Romeo and Juliet.",
+              details: "",
             ),
             ScreenplayWidget(
-              title: 'Macbeth',
+              title: 'Dreams',
               description:
-                  'A Scottish general becomes king after hearing a prophecy.',
-              venue: 'The Globe Theatre',
-              showtimes: '19:00, 20:00, 21:00',
-              price: 300,
+                  'Forma koncertního provedení audiovizuálního charakteru...',
+              venue: 'ARCHA+',
+              showtimes: 'Út 22.10. 20:00',
+              price: 400,
               availableTickets: 75,
               rating: 4.2,
-              details: "Details about Macbeth.",
+              details: "",
             ),
           ],
         ),
@@ -282,7 +282,7 @@ class ScreenplayWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '🎭 $title 🎭',
+                title,
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -311,17 +311,8 @@ class ScreenplayWidget extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                '🔖 Available Tickets: $availableTickets',
+                '⭐ Rating: $rating/5',
                 style: const TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: List.generate(5, (index) {
-                  return Icon(
-                    index < rating ? Icons.star : Icons.star_border,
-                    color: Colors.orangeAccent,
-                  );
-                }),
               ),
             ],
           ),
@@ -331,7 +322,7 @@ class ScreenplayWidget extends StatelessWidget {
   }
 }
 
-class GameDetailsScreen extends StatelessWidget {
+class GameDetailsScreen extends StatefulWidget {
   final String title;
   final String description;
   final String venue;
@@ -341,7 +332,8 @@ class GameDetailsScreen extends StatelessWidget {
   final double rating;
   final String details;
 
-  GameDetailsScreen({
+  const GameDetailsScreen({
+    super.key,
     required this.title,
     required this.description,
     required this.venue,
@@ -353,71 +345,289 @@ class GameDetailsScreen extends StatelessWidget {
   });
 
   @override
+  _GameDetailsScreenState createState() => _GameDetailsScreenState();
+}
+
+class _GameDetailsScreenState extends State<GameDetailsScreen> {
+  bool _isLoading = false; // This will control the loading screen
+  TextEditingController commentController = TextEditingController();
+
+  // Function to handle ticket purchase and updating Firestore
+  Future<void> _buyTicket() async {
+    setState(() {
+      _isLoading = true; // Show the loading screen
+    });
+
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String email = user.email!;
+
+      try {
+        // Fetch the current buyers and unbox array length
+        DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+            .collection('tickets')
+            .doc(widget.title)
+            .get();
+
+        // Safely cast the data to Map<String, dynamic>
+        Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+
+        // Check if the data exists, otherwise initialize the lists
+        List buyers = data?['buyers'] != null ? List.from(data!['buyers']) : [];
+        List unbox = data?['unbox'] != null ? List.from(data!['unbox']) : [];
+
+        // Get the current length (next available index)
+        int currentLength = buyers.length;
+
+        // Add the new email and unbox value at the next index
+        buyers.insert(currentLength, email);
+        unbox.insert(currentLength, false);
+
+        // Perform the Firebase operation
+        await FirebaseFirestore.instance
+            .collection('tickets')
+            .doc(widget.title)
+            .update({
+          'buyers': buyers,
+          'unbox': unbox,
+        });
+
+        setState(() {
+          _isLoading = false; // Hide the loading screen
+        });
+
+        // Optionally show a success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Ticket purchased successfully!')),
+        );
+      } catch (e) {
+        setState(() {
+          _isLoading = false; // Hide the loading screen
+        });
+
+        // Show an error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to purchase ticket: $e')),
+        );
+      }
+    } else {
+      setState(() {
+        _isLoading = false; // Hide the loading screen
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in!')),
+      );
+    }
+  }
+
+  // Function to submit a comment to Firestore
+  Future<void> _submitComment(String comment) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      String email = user.email!;
+      try {
+        await FirebaseFirestore.instance
+            .collection('tickets')
+            .doc(widget.title)
+            .collection('comments')
+            .add({
+          'email': email,
+          'comment': comment,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Comment submitted successfully!')),
+        );
+
+        // Clear the comment field after submission
+        commentController.clear();
+      } catch (e) {
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to submit comment: $e')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('User not logged in!')),
+      );
+    }
+  }
+
+  // Function to format Firestore timestamps into readable date format
+  String _formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    return DateFormat('dd MMM yyyy, HH:mm').format(dateTime);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Description: $description',
-                style: const TextStyle(fontSize: 18, color: Colors.white)),
-            const SizedBox(height: 10),
-            Text('Venue: $venue',
-                style: const TextStyle(fontSize: 18, color: Colors.white)),
-            const SizedBox(height: 10),
-            Text('Showtimes: $showtimes',
-                style: const TextStyle(fontSize: 18, color: Colors.white)),
-            const SizedBox(height: 10),
-            Text('Ticket Price: $price Kč',
-                style: const TextStyle(fontSize: 18, color: Colors.white)),
-            const SizedBox(height: 10),
-            Text('Available Tickets: $availableTickets',
-                style: const TextStyle(fontSize: 18, color: Colors.white)),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    Color(0xFFff4c00), // Button background color (replaces primary)
-              ),
-              onPressed: () {
-                // Handle ticket buying logic here
-              },
-              child: const Text('Buy Ticket',
-                  style: const TextStyle(fontSize: 18, color: Colors.black)),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Text(widget.title),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.description,
+                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '🕯️ Venue: ${widget.venue}',
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '🕑 Showtimes: ${widget.showtimes}',
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '💰 Ticket Price: ${widget.price} Kč',
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '⭐ Rating: ${widget.rating}/5',
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _buyTicket,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFF4C00),
+                  ),
+                  child: const Text('Buy Ticket'),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: commentController,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter your comment',
+                    labelStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(),
+                  ),
+                  style: const TextStyle(color: Colors.white),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    String comment = commentController.text;
+                    if (comment.isNotEmpty) {
+                      _submitComment(comment);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFF4C00),
+                  ),
+                  child: const Text('Submit Comment'),
+                ),
+                const SizedBox(height: 20),
+
+                // Display the list of comments below the submit button
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection('tickets')
+                        .doc(widget.title)
+                        .collection('comments')
+                        .orderBy('timestamp', descending: true)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      final comments = snapshot.data!.docs;
+
+                      return ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          var commentData = comments[index];
+                          String email = commentData['email'];
+                          String comment = commentData['comment'];
+                          Timestamp? timestamp = commentData['timestamp'] as Timestamp?;
+                          DateTime date = timestamp?.toDate() ?? DateTime.now();
+
+                          String formattedDate =
+                              timestamp != null ? _formatTimestamp(timestamp) : '';
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[900],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        email,
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      Text(
+                                        formattedDate,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    comment,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            const Text('Rate this event:',
-                style: TextStyle(fontSize: 18, color: Colors.white)),
-            Row(
-              children: List.generate(5, (index) {
-                return Icon(
-                  index < rating ? Icons.star : Icons.star_border,
-                  color: Colors.orangeAccent,
-                );
-              }),
-            ),
-            const SizedBox(height: 20),
-            const TextField(
-              decoration: InputDecoration(labelText: 'Leave a Comment'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    Color(0xFFff4c00), // Button background color (replaces primary)
-              ),
-              onPressed: () {
-                // Handle comment submission here
-              },
-              child: const Text('Submit Comment', style: TextStyle(fontSize: 18, color: Colors.black)),
-            ),
-          ],
+          ),
         ),
-      ),
+        // Loading screen overlay
+        if (_isLoading)
+          const ModalBarrier(
+            dismissible: false,
+            color: Colors.black54,
+          ),
+        if (_isLoading)
+          const Center(
+            child: CircularProgressIndicator(
+              color: Colors.orange,
+            ),
+          ),
+      ],
     );
   }
 }
