@@ -293,8 +293,9 @@ class ScreenplayWidget extends StatelessWidget {
               Text(
                 description,
                 style: const TextStyle(fontSize: 16, color: Colors.white),
-              ),
-              const SizedBox(height: 10),
+                ),
+                const SizedBox(height: 10, width: double.infinity),
+
               Text(
                 '🕯️ Venue: $venue',
                 style: const TextStyle(fontSize: 16, color: Colors.white),

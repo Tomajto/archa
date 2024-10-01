@@ -141,7 +141,10 @@ class _MarketState extends State<Market> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFFFF4C00),
                         ),
-                        child: const Text('Buy Ticket'),
+                        child: Text(
+                          'Buy Ticket',
+                          style: TextStyle(color: Colors.grey[900]), // Change the color here
+                        ),
                       ),
                     ],
                   ),

@@ -14,22 +14,28 @@ class UserSettingsScreen extends StatefulWidget {
 
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _dayController = TextEditingController();
+  final TextEditingController _monthController = TextEditingController();
+  final TextEditingController _yearController = TextEditingController();
+
   String _selectedLanguage = 'English'; // Default language
   bool _isChecking = false; // To show a loading indicator during username check
 
   @override
   void initState() {
     super.initState();
-    _loadUsername();
+    _loadSettings();
   }
 
-  // Load username from SharedPreferences
-  void _loadUsername() async {
+  // Load username and date of birth from SharedPreferences
+  void _loadSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       _usernameController.text = prefs.getString('username') ?? '';
-      _selectedLanguage =
-          prefs.getString('language') ?? 'English'; // Load saved language
+      _dayController.text = prefs.getString('dob_day') ?? '';
+      _monthController.text = prefs.getString('dob_month') ?? '';
+      _yearController.text = prefs.getString('dob_year') ?? '';
+      _selectedLanguage = prefs.getString('language') ?? 'English'; // Load saved language
     });
   }
 
@@ -43,15 +49,18 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return querySnapshot.docs.isEmpty; // True if no matching username found
   }
 
-  // Save username and language to SharedPreferences and Firestore
+  // Save username, date of birth, and language to SharedPreferences and Firestore
   Future<void> _saveSettings() async {
     final username = _usernameController.text.trim();
+    final day = _dayController.text.trim();
+    final month = _monthController.text.trim();
+    final year = _yearController.text.trim();
 
-    if (username.isEmpty) {
+    if (username.isEmpty || day.isEmpty || month.isEmpty || year.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'Username cannot be empty!',
+            'All fields must be filled!',
             style: TextStyle(color: Colors.white),
           ),
           backgroundColor: Colors.red,
@@ -74,11 +83,20 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     if (isAvailable) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('username', username);
+      await prefs.setString('dob_day', day);
+      await prefs.setString('dob_month', month);
+      await prefs.setString('dob_year', year);
       await prefs.setString('language', _selectedLanguage);
 
-      // Save the username in Firestore (you may have a different structure)
-      FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set({
+      // Save the username, date of birth, and language in Firestore
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .set({
         'username': username,
+        'dob_day': day,
+        'dob_month': month,
+        'dob_year': year,
         'language': _selectedLanguage,
       });
 
@@ -144,7 +162,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 style: const TextStyle(
                     color: Colors.white), // White text inside username input
                 decoration: InputDecoration(
-                  labelText: 'Enter your name',
+                  labelText: 'Enter your username',
                   labelStyle:
                       const TextStyle(color: Colors.white), // Label in white
                   focusedBorder: const OutlineInputBorder(
@@ -154,6 +172,62 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                   fillColor: Colors.grey[900], // Set background color for the input field
                 ),
               ),
+            ),
+            const SizedBox(height: 20),
+            // Date of Birth input fields
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _dayController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Day',
+                      filled: true,
+                      fillColor: Colors.grey[900],
+                      labelStyle: const TextStyle(color: Colors.white),
+                      border: const OutlineInputBorder(),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFFF4C00))),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextField(
+                    controller: _monthController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Month',
+                      filled: true,
+                      fillColor: Colors.grey[900],
+                      labelStyle: const TextStyle(color: Colors.white),
+                      border: const OutlineInputBorder(),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFFF4C00))),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextField(
+                    controller: _yearController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: 'Year',
+                      filled: true,
+                      fillColor: Colors.grey[900],
+                      labelStyle: const TextStyle(color: Colors.white),
+                      border: const OutlineInputBorder(),
+                      focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Color(0xFFFF4C00))),
+                    ),
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             // Show loading indicator while checking username
