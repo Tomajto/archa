@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'user_settings_screen.dart'; // Import the user settings screen
 import 'chat_screen.dart'; // Import the chat screen
