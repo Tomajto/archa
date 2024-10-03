@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously, duplicate_ignore
-
 import 'package:flutter/material.dart';
 import 'user_settings_screen.dart'; // Import the user settings screen
 import 'chat_screen.dart'; // Import the chat screen
@@ -108,7 +106,7 @@ class _RootPageState extends State<RootPage> {
                       Image.asset('assets/vlajka_uk.png',
                           width: 24, height: 24),
                       const SizedBox(width: 8),
-                      const Text("English",
+                      const Text("Angličtina",
                           style: TextStyle(color: Colors.black)),
                     ],
                   ),
@@ -135,6 +133,18 @@ class _RootPageState extends State<RootPage> {
                       const Text("Vietnamština",
                           style: TextStyle(color: Colors.black)),
                     ],
+                  ),
+                ),
+              DropdownMenuItem(
+                  value: 'assets/vlajka_ua.png',
+                  child: Row(
+                    children: [
+                      Image.asset('assets/vlajka_ua.png',
+                          width: 24, height: 24),
+                      const SizedBox(width: 8),
+                      const Text("Ukrajinština",
+                          style: TextStyle(color: Colors.black)),
+                      ],
                   ),
                 ),
               ],
